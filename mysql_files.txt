@@ -1,0 +1,55 @@
+database name: wt_project
+
+CREATE TABLE activities (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  description VARCHAR(255) NOT NULL,
+  timestamp DATETIME NOT NULL
+);
+
+INSERT INTO activities (description, timestamp) VALUES
+('❓ Student Rakib Hasan messaged Instructor Tania', '2025-06-11 01:32:33'),
+('❓ Payment received from Faria Amin (৳1500)', '2025-06-11 01:32:33'),
+('❓ Club "AI Innovators" created at BUET', '2025-06-11 01:32:33'),
+('❓ 12 new users registered today', '2025-06-11 01:32:33');
+
+CREATE TABLE clubs (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  university VARCHAR(255),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE instructors (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  password VARCHAR(255)
+);
+
+
+CREATE TABLE messages (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  sender_role ENUM('student', 'instructor') NOT NULL,
+  sender_id INT NOT NULL,
+  receiver_role ENUM('student', 'instructor') NOT NULL,
+  receiver_id INT NOT NULL,
+  message TEXT NOT NULL,
+  timestamp DATETIME NOT NULL,
+  is_read TINYINT(1) NOT NULL DEFAULT 0
+);
+
+
+CREATE TABLE payments (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  student_id INT,
+  amount DECIMAL(10,2),
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE students (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  password VARCHAR(255)
+);

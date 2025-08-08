@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ahoron - Club & Career Suggestions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-light: #a78bfa;
+      --secondary: #ec4899;
+      --secondary-light: #f472b6;
+      --accent: #f59e0b;
+      --accent-light: #fbbf24;
+      --teal: #2dd4bf;
+      --teal-light: #5eead4;
+      --cyan: #06b6d4;
+      --cyan-light: #22d3ee;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+      color: #1f2937;
+      overflow-x: hidden;
+    }
+    
+    .slide {
+      transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .gradient-text {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+    
+    .gradient-bg-hover:hover {
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+    }
+    
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .floating {
+      animation: floating 6s ease-in-out infinite;
+    }
+    
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .btn-glow:hover {
+      box-shadow: 0 0 15px rgba(124, 58, 237, 0.5);
+    }
+    
+    .typing-indicator {
+      display: inline-block;
+      padding: 10px;
+    }
+    
+    .typing-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #7c3aed;
+      margin-right: 4px;
+      animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+    
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    
+    @keyframes typingAnimation {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-5px); }
+    }
+
+    /* Quick reply buttons */
+    .quick-reply {
+      display: inline-block;
+      margin: 4px;
+      padding: 6px 12px;
+      background-color: #e9d5ff;
+      border-radius: 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .quick-reply:hover {
+      background-color: #d8b4fe;
+    }
+    
+    /* New animations */
+    @keyframes rainbow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .rainbow-text {
+      background: linear-gradient(90deg, 
+        #7c3aed, #ec4899, #f59e0b, #2dd4bf, #06b6d4, #7c3aed);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: rainbow 8s ease infinite;
+    }
+    
+    .rotate-animation {
+      animation: rotate 20s linear infinite;
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .bounce-animation {
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .shake-animation {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    
+    @keyframes shake {
+      10%, 90% { transform: translateX(-1px); }
+      20%, 80% { transform: translateX(2px); }
+      30%, 50%, 70% { transform: translateX(-4px); }
+      40%, 60% { transform: translateX(4px); }
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: var(--primary);
+      opacity: 0;
+    }
+    
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .ripple-effect {
+      position: absolute;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.4);
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+    
+    /* Glow effects */
+    .glow {
+      box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+    }
+    
+    .glow:hover {
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.8);
+    }
+    
+    /* Particle background */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      opacity: 0.3;
+    }
+    
+    /* Hover effects */
+    .hover-grow {
+      transition: transform 0.3s ease;
+    }
+    
+    .hover-grow:hover {
+      transform: scale(1.05);
+    }
+    
+    .hover-rotate {
+      transition: transform 0.3s ease;
+    }
+    
+    .hover-rotate:hover {
+      transform: rotate(5deg);
+    }
+    
+    /* Animated border */
+    .animated-border {
+      position: relative;
+    }
+    
+    .animated-border::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    
+    .animated-border:hover::after {
+      transform: scaleX(1);
+    }
+    
+    /* Floating elements */
+    .floating-element {
+      animation: floating-element 8s ease-in-out infinite;
+    }
+    
+    @keyframes floating-element {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(5px, 5px) rotate(2deg); }
+      50% { transform: translate(0, 10px) rotate(0deg); }
+      75% { transform: translate(-5px, 5px) rotate(-2deg); }
+    }
+    
+    /* Color transition */
+    .color-transition {
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+    
+    /* 3D card effect */
+    .card-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+    
+    .card-3d:hover {
+      transform: rotateY(10deg) rotateX(5deg);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Particle Background -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Navbar -->
+  <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-20 items-center">
+        <div class="flex items-center space-x-10">
+          <span class="text-3xl font-extrabold rainbow-text flex items-center hover-rotate">
+            <i class="fas fa-compass mr-2"></i>Ahoron
+          </span>
+          <div class="hidden md:flex space-x-8">
+            <a href="home.html" class="text-gray-700 hover:text-purple-600 transition font-medium flex items-center group animated-border">
+              <span class="group-hover:scale-110 transition">Home</span>
+              <span class="ml-1 group-hover:text-purple-500"><i class="fas fa-chevron-down text-xs"></i></span>
+            </a>
+            <a href="#features" class="text-gray-700 hover:text-purple-600 transition font-medium flex items-center group animated-border">
+              <span class="group-hover:scale-110 transition">Features</span>
+              <span class="ml-1 group-hover:text-purple-500"><i class="fas fa-chevron-down text-xs"></i></span>
+            </a>
+            <a href="about.html" class="text-gray-700 hover:text-purple-600 transition font-medium flex items-center group animated-border">
+              <span class="group-hover:scale-110 transition">About</span>
+              <span class="ml-1 group-hover:text-purple-500"><i class="fas fa-chevron-down text-xs"></i></span>
+            </a>
+            <a href="contact.html" class="text-gray-700 hover:text-purple-600 transition font-medium flex items-center group animated-border">
+              <span class="group-hover:scale-110 transition">Contact</span>
+              <span class="ml-1 group-hover:text-purple-500"><i class="fas fa-chevron-down text-xs"></i></span>
+            </a>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a href="login.html" class="hidden md:block text-gray-700 hover:text-purple-600 transition font-medium animated-border">Login</a>
+          <a href="signup.html" class="gradient-bg text-white px-6 py-2.5 rounded-full hover:shadow-lg transition-all btn-glow font-medium flex items-center ripple gradient-bg-hover">
+            <span>Sign Up</span>
+            <i class="fas fa-arrow-right ml-2"></i>
+          </a>
+          <button class="md:hidden text-gray-700 focus:outline-none hover:text-purple-600" id="mobileMenuButton">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg absolute top-20 left-0 right-0 z-40 px-4 py-3 border-t border-gray-100 animate__animated">
+    <div class="flex flex-col space-y-4">
+      <a href="home.html" class="text-gray-700 hover:text-purple-600 transition font-medium">Home</a>
+      <a href="#features" class="text-gray-700 hover:text-purple-600 transition font-medium">Features</a>
+      <a href="about.html" class="text-gray-700 hover:text-purple-600 transition font-medium">About</a>
+      <a href="contact.html" class="text-gray-700 hover:text-purple-600 transition font-medium">Contact</a>
+      <a href="login.html" class="text-gray-700 hover:text-purple-600 transition font-medium">Login</a>
+      <a href="signup.html" class="gradient-bg text-white px-4 py-2 rounded-full hover:shadow-lg transition-all btn-glow font-medium text-center ripple gradient-bg-hover">
+        Sign Up
+      </a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+        <div class="animate__animated animate__fadeInLeft">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+            Welcome to <span class="rainbow-text">Ahoron!</span> <br><span class="gradient-text">Club & Career</span> Suggestions
+          </h1>
+          <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+            Thank you for visiting our website! We're excited to have you here. Feel free to explore our content and let us know if you have any questions. Stay tuned for updates and new features!
+          </p>
+          <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="#" class="gradient-bg text-white px-8 py-3.5 rounded-full hover:shadow-lg transition-all btn-glow font-medium text-center ripple gradient-bg-hover hover-grow">
+              Need Help?
+            </a>
+            <a href="#features" class="border-2 border-purple-500 text-purple-600 px-8 py-3.5 rounded-full hover:bg-purple-50 transition-all font-medium text-center ripple hover-grow">
+              Explore Features
+            </a>
+          </div>
+          <div class="mt-8 flex items-center space-x-4">
+            
+            
+          </div>
+        </div>
+        <div class="animate__animated animate__fadeInRight relative">
+          <div class="relative floating">
+            <div class="absolute -top-10 -left-10 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+            <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div class="absolute top-20 -right-10 w-32 h-32 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+            <div class="absolute -top-5 -right-5 w-24 h-24 bg-teal-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-3000"></div>
+            <div class="relative bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-white card-3d">
+              <div class="slideshow relative h-96 w-full">
+                <div class="slide absolute inset-0 opacity-100">
+                  <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" class="w-full h-full object-cover" />
+                  <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                    <h3 class="text-white font-bold text-xl">Student Clubs</h3>
+                    <p class="text-white/80">Find clubs that match your interests</p>
+                  </div>
+                </div>
+                <div class="slide absolute inset-0 opacity-0">
+                  <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" class="w-full h-full object-cover" />
+                  <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                    <h3 class="text-white font-bold text-xl">Career Paths</h3>
+                    <p class="text-white/80">Discover careers that fit your personality</p>
+                  </div>
+                </div>
+                <div class="slide absolute inset-0 opacity-0">
+                  <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" class="w-full h-full object-cover" />
+                  <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                    <h3 class="text-white font-bold text-xl">Skill Development</h3>
+                    <p class="text-white/80">Grow your abilities with our guidance</p>
+                  </div>
+                </div>
+              </div>
+              <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                <button class="slide-indicator w-3 h-3 rounded-full bg-white opacity-100 hover-grow" data-index="0"></button>
+                <button class="slide-indicator w-3 h-3 rounded-full bg-white opacity-50 hover-grow" data-index="1"></button>
+                <button class="slide-indicator w-3 h-3 rounded-full bg-white opacity-50 hover-grow" data-index="2"></button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Floating elements around the hero image -->
+          <div class="absolute -bottom-10 -left-10 w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center shadow-lg floating-element">
+            <div class="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
+              <i class="fas fa-users text-purple-600 text-xl"></i>
+            </div>
+          </div>
+          
+          <div class="absolute -top-5 right-0 w-20 h-20 bg-pink-100 rounded-2xl flex items-center justify-center shadow-lg floating-element" style="animation-delay: 1s;">
+            <div class="w-14 h-14 bg-pink-200 rounded-xl flex items-center justify-center rotate-animation">
+              <i class="fas fa-star text-pink-600"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div id ="features" class="py-16 bg-gradient-to-b from-white to-purple-50 relative overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-64 h-64 bg-purple-100 rounded-full filter blur-3xl opacity-20 -translate-x-32 -translate-y-32"></div>
+    <div class="absolute bottom-0 right-0 w-64 h-64 bg-pink-100 rounded-full filter blur-3xl opacity-20 translate-x-32 translate-y-32"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-purple-100 text-purple-600 font-medium mb-4 hover-grow">Features</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How Ahoron Helps You Succeed</h2>
+        <p class="max-w-2xl mx-auto text-lg text-gray-600">Our platform provides comprehensive tools to guide your extracurricular and career journey</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg card-hover border border-gray-100 hover:border-purple-200 transition-all duration-300 group">
+          <div class="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center mb-6 group-hover:bg-purple-200 transition-all">
+            <i class="fas fa-brain text-2xl text-purple-600 group-hover:text-purple-700"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Club Activities</h3>
+          <p class="text-gray-600 mb-4">Our advanced algorithm analyzes the club features and upcoming events of clubs for you.</p>
+          <a href="#" class="text-purple-600 font-medium inline-flex items-center group-hover:text-purple-700 transition-all">
+            Learn more <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-all"></i>
+          </a>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg card-hover border border-gray-100 hover:border-pink-200 transition-all duration-300 group">
+          <div class="w-14 h-14 rounded-xl bg-pink-100 flex items-center justify-center mb-6 group-hover:bg-pink-200 transition-all">
+            <i class="fas fa-chart-pie text-2xl text-pink-600 group-hover:text-pink-700"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">API suggestion</h3>
+          <p class="text-gray-600 mb-4">Get comprehensive reports on the clubs and careers surrounding to you by chatting to our bot.</p>
+          <a href="#" class="text-pink-600 font-medium inline-flex items-center group-hover:text-pink-700 transition-all">
+            Learn more <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-all"></i>
+          </a>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg card-hover border border-gray-100 hover:border-yellow-200 transition-all duration-300 group">
+          <div class="w-14 h-14 rounded-xl bg-yellow-100 flex items-center justify-center mb-6 group-hover:bg-yellow-200 transition-all">
+            <i class="fas fa-users text-2xl text-yellow-600 group-hover:text-yellow-700"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Community Network</h3>
+          <p class="text-gray-600 mb-4">Connect with other students in recommended clubs and professionals in suggested career paths for mentorship.</p>
+          <a href="#" class="text-yellow-600 font-medium inline-flex items-center group-hover:text-yellow-700 transition-all">
+            Learn more <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-all"></i>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Additional feature cards with different colors -->
+      <div class="grid md:grid-cols-3 gap-8 mt-8">
+        <!-- Feature 4 -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg card-hover border border-gray-100 hover:border-teal-200 transition-all duration-300 group">
+          <div class="w-14 h-14 rounded-xl bg-teal-100 flex items-center justify-center mb-6 group-hover:bg-teal-200 transition-all">
+            <i class="fas fa-lightbulb text-2xl text-teal-600 group-hover:text-teal-700"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Skill Matching</h3>
+          <p class="text-gray-600 mb-4">Discover which clubs can help you develop the skills you're most interested in.</p>
+          <a href="#" class="text-teal-600 font-medium inline-flex items-center group-hover:text-teal-700 transition-all">
+            Learn more <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-all"></i>
+          </a>
+        </div>
+        
+        <!-- Feature 5 -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg card-hover border border-gray-100 hover:border-cyan-200 transition-all duration-300 group">
+          <div class="w-14 h-14 rounded-xl bg-cyan-100 flex items-center justify-center mb-6 group-hover:bg-cyan-200 transition-all">
+            <i class="fas fa-calendar-check text-2xl text-cyan-600 group-hover:text-cyan-700"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Event Tracking</h3>
+          <p class="text-gray-600 mb-4">Never miss important club events with our personalized calendar and reminders.</p>
+          <a href="#" class="text-cyan-600 font-medium inline-flex items-center group-hover:text-cyan-700 transition-all">
+            Learn more <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-all"></i>
+          </a>
+        </div>
+        
+        <!-- Feature 6 -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg card-hover border border-gray-100 hover:border-indigo-200 transition-all duration-300 group">
+          <div class="w-14 h-14 rounded-xl bg-indigo-100 flex items-center justify-center mb-6 group-hover:bg-indigo-200 transition-all">
+            <i class="fas fa-graduation-cap text-2xl text-indigo-600 group-hover:text-indigo-700"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Career Paths</h3>
+          <p class="text-gray-600 mb-4">See how different clubs can lead to specific career opportunities after graduation.</p>
+          <a href="#" class="text-indigo-600 font-medium inline-flex items-center group-hover:text-indigo-700 transition-all">
+            Learn more <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-all"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Demo Section -->
+  <div class="py-16 bg-gradient-to-r from-purple-50 to-pink-50 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-purple-100 text-purple-600 font-medium mb-4 hover-grow">Try It Out</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Interactive Club Finder</h2>
+        <p class="max-w-2xl mx-auto text-lg text-gray-600">Answer a few questions to see club suggestions tailored for you</p>
+      </div>
+      
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden max-w-3xl mx-auto">
+        <div class="p-8">
+          <div class="flex items-center mb-6">
+            <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+              <i class="fas fa-robot text-purple-600 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-900">Ahoron Bot</h3>
+              <p class="text-sm text-gray-500">Let's find your perfect club match!</p>
+            </div>
+          </div>
+          
+          <div class="bg-gray-50 rounded-lg p-6 mb-6 min-h-48">
+            <div id="chatMessages">
+              <div class="mb-4">
+                <div class="bg-purple-100 text-purple-800 rounded-lg p-4 inline-block max-w-xs">
+                  Hi there! I'm here to help you find clubs that match your interests. What are you passionate about?
+                </div>
+              </div>
+            </div>
+            
+            <div id="typingIndicator" class="hidden">
+              <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="quickReplies" class="flex flex-wrap mb-4">
+            <div class="quick-reply" onclick="sendReply('Technology')">Technology</div>
+            <div class="quick-reply" onclick="sendReply('Arts')">Arts</div>
+            <div class="quick-reply" onclick="sendReply('Sports')">Sports</div>
+            <div class="quick-reply" onclick="sendReply('Community Service')">Community Service</div>
+            <div class="quick-reply" onclick="sendReply('Debate')">Debate</div>
+            <div class="quick-reply" onclick="sendReply('Music')">Music</div>
+          </div>
+          
+          <div class="flex">
+            <input type="text" id="chatInput" class="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Type your interests...">
+            <button onclick="sendMessage()" class="bg-purple-600 text-white px-4 py-2 rounded-r-lg hover:bg-purple-700 transition">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Floating decorative elements -->
+    <div class="absolute top-20 left-10 w-16 h-16 bg-yellow-100 rounded-full opacity-20 floating-element"></div>
+    <div class="absolute bottom-20 right-10 w-24 h-24 bg-purple-100 rounded-full opacity-20 floating-element" style="animation-delay: 1s;"></div>
+  </div>
+
+  <!-- Testimonials -->
+  <div class="py-16 bg-white relative overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute top-0 right-0 w-64 h-64 bg-pink-100 rounded-full filter blur-3xl opacity-10 -translate-y-32 translate-x-32"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-purple-100 text-purple-600 font-medium mb-4 hover-grow">Testimonials</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Students Are Saying</h2>
+        <p class="max-w-2xl mx-auto text-lg text-gray-600">Hear from students who found their perfect matches through Ahoron</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Testimonial 1 -->
+        <div class="bg-gray-50 rounded-2xl p-8 shadow-md border border-gray-100">
+          <div class="flex items-center mb-4">
+            <div class="flex items-center">
+              <img class="w-12 h-12 rounded-full mr-4" src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sarah J.">
+              <div>
+                <h4 class="font-bold text-gray-900">Lamia Rahman</h4>
+                <p class="text-sm text-gray-500">University of Dhaka</p>
+              </div>
+            </div>
+            <div class="ml-auto">
+              <i class="fas fa-quote-right text-purple-200 text-2xl"></i>
+            </div>
+          </div>
+          <p class="text-gray-700 italic mb-4">"Ahoron recommended the debate club which I never would have considered. Now I'm the president and it's transformed my public speaking skills!"</p>
+          <div class="flex">
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+          </div>
+        </div>
+        
+        <!-- Testimonial 2 -->
+        <div class="bg-gray-50 rounded-2xl p-8 shadow-md border border-gray-100">
+          <div class="flex items-center mb-4">
+            <div class="flex items-center">
+              <img class="w-12 h-12 rounded-full mr-4" src="https://randomuser.me/api/portraits/men/65.jpg" alt="Michael T.">
+              <div>
+                <h4 class="font-bold text-gray-900">Anil Das</h4>
+                <p class="text-sm text-gray-500">Jahangirnagar University</p>
+              </div>
+            </div>
+            <div class="ml-auto">
+              <i class="fas fa-quote-right text-purple-200 text-2xl"></i>
+            </div>
+          </div>
+          <p class="text-gray-700 italic mb-4">"The career suggestions opened my eyes to UX design, which perfectly combines my artistic and technical interests. I'm now interning at a design firm!"</p>
+          <div class="flex">
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+          </div>
+        </div>
+        
+        <!-- Testimonial 3 -->
+        <div class="bg-gray-50 rounded-2xl p-8 shadow-md border border-gray-100">
+          <div class="flex items-center mb-4">
+            <div class="flex items-center">
+              <img class="w-12 h-12 rounded-full mr-4" src="https://randomuser.me/api/portraits/women/28.jpg" alt="Priya K.">
+              <div>
+                <h4 class="font-bold text-gray-900">Anika Tasnim</h4>
+                <p class="text-sm text-gray-500">BUP</p>
+              </div>
+            </div>
+            <div class="ml-auto">
+              <i class="fas fa-quote-right text-purple-200 text-2xl"></i>
+            </div>
+          </div>
+          <p class="text-gray-700 italic mb-4">"I was overwhelmed by all the club options. Ahoron's recommendations helped me find the perfect balance between my interests and skill development."</p>
+          <div class="flex">
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star text-yellow-400 mr-1"></i>
+            <i class="fas fa-star-half-alt text-yellow-400 mr-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="py-16 gradient-bg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Discover Your Perfect Matches?</h2>
+        <p class="text-lg text-white/90 max-w-2xl mx-auto mb-8">Join thousands of students who found their ideal clubs and career paths through our platform.</p>
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-12 mb-12">
+        <div>
+          <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-compass mr-2"></i>Ahoron
+          </h3>
+          <p class="mb-6">The smart way to find your perfect club and career matches.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-white font-semibold text-lg mb-4">Product</h4>
+          <ul class="space-y-3">
+            <li><a href="#" class="hover:text-white transition">Features</a></li>
+            <li><a href="#" class="hover:text-white transition">Pricing</a></li>
+            <li><a href="#" class="hover:text-white transition">Case Studies</a></li>
+            <li><a href="#" class="hover:text-white transition">Updates</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-white font-semibold text-lg mb-4">Company</h4>
+          <ul class="space-y-3">
+            <li><a href="#" class="hover:text-white transition">About Us</a></li>
+            <li><a href="#" class="hover:text-white transition">Careers</a></li>
+            <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-white font-semibold text-lg mb-4">Contact</h4>
+          <ul class="space-y-3">
+            <li class="flex items-center">
+              <i class="fas fa-envelope mr-2 text-purple-400"></i> hello@ahoron.com
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone-alt mr-2 text-purple-400"></i> (123) 456-7890
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-map-marker-alt mr-2 text-purple-400"></i> 123 Campus Dr, Edu City
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-500 mb-4 md:mb-0">© 2023 Ahoron. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-500 hover:text-white transition">Privacy Policy</a>
+          <a href="#" class="text-gray-500 hover:text-white transition">Terms of Service</a>
+          <a href="#" class="text-gray-500 hover:text-white transition">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="fixed bottom-8 right-8 bg-purple-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-purple-700 transition opacity-0 invisible">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script>
+  // Enhanced Slideshow
+  const slides = document.querySelectorAll('.slide');
+  const indicators = document.querySelectorAll('.slide-indicator');
+  let current = 0;
+  let slideInterval;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.style.opacity = i === index ? '1' : '0';
+      slide.style.transform = i === index ? 'translateX(0)' : `translateX(${i < index ? '-' : ''}20px)`;
+
+    });
+    
+    indicators.forEach((indicator, i) => {
+      indicator.classList.toggle('opacity-100', i === index);
+      indicator.classList.toggle('opacity-50', i !== index);
+    });
+  }
+
+  function nextSlide() {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  }
+
+  function startSlideshow() {
+    slideInterval = setInterval(nextSlide, 5000);
+  }
+
+  function stopSlideshow() {
+    clearInterval(slideInterval);
+  }
+
+  // Click indicator to go to specific slide
+  indicators.forEach(indicator => {
+    indicator.addEventListener('click', () => {
+      current = parseInt(indicator.dataset.index);
+      showSlide(current);
+      stopSlideshow();
+      startSlideshow();
+    });
+  });
+
+  // Initialize
+  showSlide(current);
+  startSlideshow();
+
+  // Back to Top Button
+  const backToTopButton = document.getElementById('backToTop');
+  
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTopButton.classList.remove('opacity-0', 'invisible');
+      backToTopButton.classList.add('opacity-100', 'visible');
+    } else {
+      backToTopButton.classList.remove('opacity-100', 'visible');
+      backToTopButton.classList.add('opacity-0', 'invisible');
+    }
+  });
+  
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  // Mobile menu toggle
+  document.getElementById('mobileMenuButton').addEventListener('click', function() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenu.classList.toggle('hidden');
+    mobileMenu.classList.toggle('animate__fadeInDown');
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(event) {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    
+    if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('animate__fadeInDown');
+    }
+  });
+
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        
+        // Update URL without page jump
+        if (history.pushState) {
+          history.pushState(null, null, targetId);
+        } else {
+          window.location.hash = targetId;
+        }
+      }
+    });
+  });
+</script>
+</body>
+
+</html>

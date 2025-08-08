@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f5 100%);
+      animation: fadeIn 0.5s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .signup-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.2);
+      overflow: hidden;
+      position: relative;
+      transform: translateY(0);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .signup-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px -5px rgba(99, 102, 241, 0.4);
+    }
+    .signup-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #8b5cf6, #6366f1, #4f46e5);
+    }
+    .input-field {
+      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+    }
+    .input-field:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+      transform: scale(1.01);
+    }
+    .input-field:hover {
+      border-color: #a78bfa;
+    }
+    .submit-btn {
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.3);
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px -1px rgba(139, 92, 246, 0.5);
+      background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+    }
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    .password-hint {
+      transition: all 0.3s ease;
+    }
+    .password-hint.valid {
+      color: #10b981;
+      font-weight: 500;
+    }
+    .password-hint.invalid {
+      color: #6b7280;
+    }
+    .floating-label {
+      position: absolute;
+      left: 15px;
+      top: -10px;
+      background: white;
+      padding: 0 5px;
+      font-size: 12px;
+      color: #8b5cf6;
+      font-weight: 600;
+      z-index: 10;
+      transition: all 0.2s ease;
+    }
+    .input-container {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .input-container:hover .floating-label {
+      color: #7c3aed;
+    }
+    .input-icon {
+      transition: all 0.2s ease;
+    }
+    .input-field:focus + .input-icon-container .input-icon {
+      color: #7c3aed;
+      transform: scale(1.1);
+    }
+    .password-toggle {
+      transition: all 0.2s ease;
+    }
+    .password-toggle:hover {
+      color: #7c3aed;
+      transform: scale(1.1);
+    }
+    .role-select:focus + .select-icon-container .select-icon {
+      transform: rotate(180deg);
+    }
+    .select-icon {
+      transition: transform 0.3s ease;
+    }
+    .password-strength-meter {
+      height: 4px;
+      background-color: #e2e8f0;
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .password-strength-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease, background-color 0.4s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 animate__animated animate__fadeIn">
+  <div class="signup-card p-8 w-full max-w-md animate__animated animate__fadeInUp">
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-3xl shadow-lg animate__animated animate__pulse hover:animate-bounce">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <h2 class="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Create Account</h2>
+      <p class="text-purple-400 text-sm">Join our learning community</p>
+    </div>
+    
+    <form id="signupForm" class="space-y-4">
+      <div class="space-y-6">
+        <!-- Name Field -->
+        <div class="input-container">
+          <div class="floating-label">Full Name</div>
+          <div class="relative">
+            <input 
+              name="name" 
+              id="name"
+              placeholder="Enter your name here" 
+              required 
+              class="input-field w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 pl-10 pr-3"
+            />
+            <div class="input-icon-container absolute inset-y-0 left-3 flex items-center">
+              <i class="fas fa-user input-icon text-purple-400"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="input-container">
+          <div class="floating-label">Email</div>
+          <div class="relative">
+            <input 
+              name="email" 
+              id="email"
+              type="email" 
+              placeholder="example@domain.com" 
+              required 
+              class="input-field w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 pl-10 pr-3"
+            />
+            <div class="input-icon-container absolute inset-y-0 left-3 flex items-center">
+              <i class="fas fa-envelope input-icon text-purple-400"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="input-container">
+          <div class="floating-label">Password</div>
+          <div class="relative">
+            <input 
+              id="password" 
+              name="password" 
+              type="password" 
+              placeholder="••••••••" 
+              required 
+              class="input-field w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 pl-10 pr-10"
+            />
+            <div class="input-icon-container absolute inset-y-0 left-3 flex items-center">
+              <i class="fas fa-lock input-icon text-purple-400"></i>
+            </div>
+            <button 
+              type="button" 
+              class="password-toggle absolute inset-y-0 right-3 flex items-center text-purple-400 hover:text-purple-600 transition-colors"
+              onclick="togglePasswordVisibility('password', 'eyeIcon')"
+            >
+              <i id="eyeIcon" class="fas fa-eye-slash"></i>
+            </button>
+          </div>
+          <div class="password-strength-meter mt-2">
+            <div id="passwordStrength" class="password-strength-fill"></div>
+          </div>
+          <ul class="text-xs ml-2 mt-2 space-y-1" id="passwordHints">
+            <li id="lengthHint" class="password-hint invalid flex items-center"><span class="mr-2">•</span> At least 6 characters</li>
+            <li id="upperHint" class="password-hint invalid flex items-center"><span class="mr-2">•</span> Uppercase letter (A–Z)</li>
+            <li id="lowerHint" class="password-hint invalid flex items-center"><span class="mr-2">•</span> Lowercase letter (a–z)</li>
+            <li id="digitHint" class="password-hint invalid flex items-center"><span class="mr-2">•</span> Number (0–9)</li>
+          </ul>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="input-container">
+          <div class="floating-label">Confirm Password</div>
+          <div class="relative">
+            <input 
+              id="confirmPassword" 
+              name="confirmPassword" 
+              type="password" 
+              placeholder="••••••••" 
+              required 
+              class="input-field w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 pl-10 pr-10"
+            />
+            <div class="input-icon-container absolute inset-y-0 left-3 flex items-center">
+              <i class="fas fa-lock input-icon text-purple-400"></i>
+            </div>
+            <button 
+              type="button" 
+              class="password-toggle absolute inset-y-0 right-3 flex items-center text-purple-400 hover:text-purple-600 transition-colors"
+              onclick="togglePasswordVisibility('confirmPassword', 'eyeIconConfirm')"
+            >
+              <i id="eyeIconConfirm" class="fas fa-eye-slash"></i>
+            </button>
+          </div>
+          <p id="matchHint" class="text-xs mt-2 ml-2 font-medium"></p>
+        </div>
+
+        <!-- Role Field -->
+        <div class="input-container">
+          <div class="floating-label">Role</div>
+          <div class="relative">
+            <select 
+              name="role" 
+              id="role"
+              required 
+              class="role-select input-field w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 appearance-none pl-10 pr-8"
+            >
+              <option value="">Select Role</option>
+              <option value="student">Student</option>
+              <option value="instructor">Instructor</option>
+            </select>
+            <div class="input-icon-container absolute inset-y-0 left-3 flex items-center">
+              <i class="fas fa-user-tag input-icon text-purple-400"></i>
+            </div>
+            <div class="select-icon-container absolute inset-y-0 right-3 flex items-center pointer-events-none">
+              <i class="fas fa-chevron-down select-icon text-purple-400"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="submit-btn w-full text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 mt-6 font-medium"
+      >
+        Sign Up
+      </button>
+      
+      <p id="msg" class="text-center text-sm mt-4 font-medium"></p>
+    </form>
+  </div>
+
+  <script>
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const lengthHint = document.getElementById('lengthHint');
+    const upperHint = document.getElementById('upperHint');
+    const lowerHint = document.getElementById('lowerHint');
+    const digitHint = document.getElementById('digitHint');
+    const matchHint = document.getElementById('matchHint');
+    const msgEl = document.getElementById('msg');
+    const passwordStrength = document.getElementById('passwordStrength');
+
+    function togglePasswordVisibility(fieldId, iconId) {
+      const field = document.getElementById(fieldId);
+      const icon = document.getElementById(iconId);
+      
+      if (field.type === 'password') {
+        field.type = 'text';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      } else {
+        field.type = 'password';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      }
+    }
+
+    function calculatePasswordStrength(password) {
+      let strength = 0;
+      
+      // Length contributes up to 40%
+      strength += Math.min(password.length / 15 * 40, 40);
+      
+      // Character variety contributes up to 60%
+      const hasUpper = /[A-Z]/.test(password);
+      const hasLower = /[a-z]/.test(password);
+      const hasDigit = /[0-9]/.test(password);
+      const hasSpecial = /[^A-Za-z0-9]/.test(password);
+      
+      const varietyCount = [hasUpper, hasLower, hasDigit, hasSpecial].filter(Boolean).length;
+      strength += varietyCount * 15; // 15% per variety type
+      
+      return Math.min(strength, 100);
+    }
+
+    function updateHints(password) {
+      // Length check
+      if (password.length >= 6) {
+        lengthHint.innerHTML = '<span class="mr-2">✓</span> At least 6 characters';
+        lengthHint.classList.add('valid');
+        lengthHint.classList.remove('invalid');
+      } else {
+        lengthHint.innerHTML = '<span class="mr-2">•</span> At least 6 characters';
+        lengthHint.classList.add('invalid');
+        lengthHint.classList.remove('valid');
+      }
+
+      // Uppercase check
+      if (/[A-Z]/.test(password)) {
+        upperHint.innerHTML = '<span class="mr-2">✓</span> Uppercase letter (A–Z)';
+        upperHint.classList.add('valid');
+        upperHint.classList.remove('invalid');
+      } else {
+        upperHint.innerHTML = '<span class="mr-2">•</span> Uppercase letter (A–Z)';
+        upperHint.classList.add('invalid');
+        upperHint.classList.remove('valid');
+      }
+
+      // Lowercase check
+      if (/[a-z]/.test(password)) {
+        lowerHint.innerHTML = '<span class="mr-2">✓</span> Lowercase letter (a–z)';
+        lowerHint.classList.add('valid');
+        lowerHint.classList.remove('invalid');
+      } else {
+        lowerHint.innerHTML = '<span class="mr-2">•</span> Lowercase letter (a–z)';
+        lowerHint.classList.add('invalid');
+        lowerHint.classList.remove('valid');
+      }
+
+      // Digit check
+      if (/[0-9]/.test(password)) {
+        digitHint.innerHTML = '<span class="mr-2">✓</span> Number (0–9)';
+        digitHint.classList.add('valid');
+        digitHint.classList.remove('invalid');
+      } else {
+        digitHint.innerHTML = '<span class="mr-2">•</span> Number (0–9)';
+        digitHint.classList.add('invalid');
+        digitHint.classList.remove('valid');
+      }
+      
+      // Update password strength meter
+      const strength = calculatePasswordStrength(password);
+      passwordStrength.style.width = strength + '%';
+      
+      if (strength < 30) {
+        passwordStrength.style.backgroundColor = '#ef4444'; // red
+      } else if (strength < 70) {
+        passwordStrength.style.backgroundColor = '#f59e0b'; // amber
+      } else {
+        passwordStrength.style.backgroundColor = '#10b981'; // green
+      }
+    }
+
+    passwordInput.addEventListener('input', () => {
+      updateHints(passwordInput.value);
+    });
+
+    confirmPasswordInput.addEventListener('input', () => {
+      if (confirmPasswordInput.value === '') {
+        matchHint.textContent = '';
+        matchHint.className = 'text-xs mt-2 ml-2';
+      } else if (confirmPasswordInput.value === passwordInput.value) {
+        matchHint.innerHTML = '<span class="text-green-500">✓</span> Passwords match';
+        matchHint.className = 'text-xs mt-2 ml-2 text-green-500 font-medium';
+      } else {
+        matchHint.innerHTML = '<span class="text-red-500">✗</span> Passwords do not match';
+        matchHint.className = 'text-xs mt-2 ml-2 text-red-500 font-medium';
+      }
+    });
+
+    // Add focus/blur effects to all inputs
+    document.querySelectorAll('.input-field').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.parentElement.parentElement.querySelector('.floating-label').style.color = '#7c3aed';
+      });
+      
+      input.addEventListener('blur', () => {
+        input.parentElement.parentElement.querySelector('.floating-label').style.color = '#8b5cf6';
+      });
+    });
+
+    const form = document.getElementById('signupForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      const password = data.password;
+      const confirmPassword = data.confirmPassword;
+
+      const isValid =
+        password.length >= 6 &&
+        /[A-Z]/.test(password) &&
+        /[a-z]/.test(password) &&
+        /[0-9]/.test(password) &&
+        password === confirmPassword;
+
+      if (!isValid) {
+        msgEl.textContent = 'Please fix password requirements.';
+        msgEl.className = 'text-center text-sm mt-4 text-red-500 font-medium animate__animated animate__shakeX';
+        return;
+      }
+
+      delete data.confirmPassword;
+
+      try {
+        // Show loading state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creating account...';
+
+        const res = await fetch('http://localhost:3000/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+        msgEl.textContent = result.message;
+
+        if (res.ok) {
+          msgEl.className = 'text-center text-sm mt-4 text-green-500 font-medium animate__animated animate__fadeIn';
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 1000);
+        } else {
+          msgEl.className = 'text-center text-sm mt-4 text-red-500 font-medium animate__animated animate__shakeX';
+        }
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = 'Server error';
+        msgEl.className = 'text-center text-sm mt-4 text-red-500 font-medium animate__animated animate__shakeX';
+      } finally {
+        // Reset button state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign Up';
+      }
+    });
+  </script>
+</body>
+</html>

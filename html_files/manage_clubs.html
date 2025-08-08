@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Clubs | Submit Club Request</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --secondary: #ec4899;
+      --accent: #f59e0b;
+      --light: #f8fafc;
+      --dark: #1e293b;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fef3c7 0%, #fce7f3 50%, #e9d5ff 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+    }
+    
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .form-container {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .form-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px 0 rgba(124, 58, 237, 0.3);
+    }
+    
+    .form-title {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .form-input {
+      transition: all 0.3s ease;
+      background: rgba(248, 250, 252, 0.8);
+      border: 2px solid rgba(124, 58, 237, 0.2);
+    }
+    
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
+      background: rgba(248, 250, 252, 0.9);
+    }
+    
+    .submit-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background-size: 200% 200%;
+      animation: gradientButton 3s ease infinite;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(124, 58, 237, 0.2);
+    }
+    
+    @keyframes gradientButton {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(124, 58, 237, 0.3);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(1px);
+    }
+    
+    .file-input::file-selector-button {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .file-input::file-selector-button:hover {
+      opacity: 0.9;
+    }
+    
+    .success-message {
+      animation: bounceIn 0.5s;
+    }
+    
+    .error-message {
+      animation: shakeX 0.5s;
+    }
+    
+    .warning-message {
+      animation: pulse 2s infinite;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center px-4 py-8">
+  <div class="form-container rounded-2xl p-8 max-w-xl w-full animate__animated animate__fadeInDown">
+    <h1 class="text-3xl font-extrabold form-title mb-6 text-center animate__animated animate__fadeIn">
+      <i class="fas fa-users mr-2"></i>Submit Club for Approval
+    </h1>
+    
+    <form id="clubForm" class="space-y-5 animate__animated animate__fadeInUp">
+      <!-- Club Name -->
+      <div class="animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+        <label for="clubName" class="block font-semibold text-gray-700 mb-1 flex items-center">
+          <i class="fas fa-signature text-indigo-500 mr-2"></i>Club Name
+        </label>
+        <input type="text" id="clubName" name="clubName" required 
+          class="w-full form-input rounded-lg p-3 focus:outline-none" />
+      </div>
+
+      <!-- University Name -->
+      <div class="animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+        <label for="universityName" class="block font-semibold text-gray-700 mb-1 flex items-center">
+          <i class="fas fa-university text-indigo-500 mr-2"></i>University Name
+        </label>
+        <input type="text" id="universityName" name="universityName" required 
+          class="w-full form-input rounded-lg p-3 focus:outline-none" />
+      </div>
+
+      <!-- Club Description -->
+      <div class="animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+        <label for="clubDescription" class="block font-semibold text-gray-700 mb-1 flex items-center">
+          <i class="fas fa-align-left text-indigo-500 mr-2"></i>Club Description
+        </label>
+        <textarea id="clubDescription" name="clubDescription" rows="4" required 
+          class="w-full form-input rounded-lg p-3 focus:outline-none"></textarea>
+      </div>
+
+      <!-- Facebook Page Link -->
+      <div class="animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+        <label for="fbLink" class="block font-semibold text-gray-700 mb-1 flex items-center">
+          <i class="fab fa-facebook text-indigo-500 mr-2"></i>Facebook Page Link
+        </label>
+        <input type="url" id="fbLink" name="fbLink" required placeholder="https://facebook.com/yourclubpage" 
+          class="w-full form-input rounded-lg p-3 focus:outline-none" />
+      </div>
+
+      <!-- Club Image -->
+      <div class="animate__animated animate__fadeInUp" style="animation-delay: 0.5s">
+        <label for="clubImage" class="block font-semibold text-gray-700 mb-1 flex items-center">
+          <i class="fas fa-image text-indigo-500 mr-2"></i>Club Image
+        </label>
+        <input type="file" id="clubImage" name="clubImage" accept="image/*" 
+          class="w-full file-input border border-gray-300 rounded-lg p-2" />
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" 
+        class="w-full submit-btn text-white py-3 rounded-lg font-semibold transition-all flex items-center justify-center animate__animated animate__fadeInUp" 
+        style="animation-delay: 0.6s">
+        <i class="fas fa-paper-plane mr-2"></i>Submit for Approval
+      </button>
+    </form>
+
+    <!-- Response Message -->
+    <p id="responseMsg" class="mt-4 text-center font-semibold"></p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('clubForm');
+      const responseMsg = document.getElementById('responseMsg');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Submitting...';
+        submitBtn.disabled = true;
+
+        const club_name = document.getElementById('clubName').value.trim();
+        const university_name = document.getElementById('universityName').value.trim();
+        const description = document.getElementById('clubDescription').value.trim();
+        const facebook_link = document.getElementById('fbLink').value.trim();
+        const clubImage = document.getElementById('clubImage').files[0];
+
+        // Validate required fields
+        if (!club_name || !university_name || !description || !facebook_link) {
+          responseMsg.textContent = '❌ Please fill in all required fields.';
+          responseMsg.className = 'mt-4 text-center font-semibold text-red-600 error-message';
+          submitBtn.innerHTML = originalBtnText;
+          submitBtn.disabled = false;
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('club_name', club_name);
+        formData.append('university_name', university_name);
+        formData.append('description', description);
+        formData.append('facebook_link', facebook_link);
+        if (clubImage) {
+          formData.append('club_image', clubImage);
+        }
+
+        try {
+          const response = await fetch('http://localhost:3000/api/clubs/request', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (response.status === 409) {
+            responseMsg.textContent = '⚠️ A club with this Facebook link already exists.';
+            responseMsg.className = 'mt-4 text-center font-semibold text-yellow-600 warning-message';
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error('Submission failed');
+          }
+
+          // Show success and reset form
+          responseMsg.textContent = '✅ Club request submitted successfully!';
+          responseMsg.className = 'mt-4 text-center font-semibold text-green-600 success-message';
+          form.reset();
+          submitBtn.innerHTML = originalBtnText;
+          submitBtn.disabled = false;
+
+        } catch (error) {
+          console.error('Error:', error);
+          responseMsg.textContent = '❌ Error submitting club request. Please try again.';
+          responseMsg.className = 'mt-4 text-center font-semibold text-red-600 error-message';
+          submitBtn.innerHTML = originalBtnText;
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

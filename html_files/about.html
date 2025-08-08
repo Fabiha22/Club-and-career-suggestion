@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Ahoron</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9fafb;
+    }
+    .home-btn {
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(79, 70, 229, 0.1);
+    }
+    .home-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(79, 70, 229, 0.15);
+    }
+    .home-btn:active {
+      transform: translateY(0);
+    }
+    .feature-item {
+      transition: all 0.2s ease;
+    }
+    .feature-item:hover {
+      transform: translateX(4px);
+      color: #4f46e5;
+    }
+    .tech-stack {
+      display: inline-block;
+      transition: all 0.2s ease;
+    }
+    .tech-stack:hover {
+      transform: translateY(-2px);
+      color: #4f46e5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Button -->
+  <div class="container mx-auto px-6 py-4">
+    <button onclick="window.location.href='home.html'" 
+            class="home-btn flex items-center gap-2 bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium">
+      <i class="fas fa-arrow-left"></i>
+      Back to Home
+    </button>
+  </div>
+
+  <!-- About Section -->
+  <section id="about-ahoron" class="py-12 px-6 bg-gray-50">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 text-indigo-700">About Ahoron</h2>
+      <p class="mb-6 text-gray-700 leading-relaxed">
+        Ahoron is a comprehensive web platform designed to streamline academic collaboration and campus life.
+        Whether you're a student, instructor, or administrator, Ahoron gives you all the tools you need to communicate,
+        organize, and manage activities in one centralized place.
+      </p>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm mb-8">
+        <h3 class="text-2xl font-semibold mb-4 text-indigo-600">Our Mission</h3>
+        <p class="mb-6 text-gray-700 leading-relaxed">
+          To empower educational communities by providing an intuitive, real-time system for messaging, club management,
+          event coordination, and administrative oversight—all backed by secure authentication and a responsive design.
+        </p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm mb-8">
+        <h3 class="text-2xl font-semibold mb-4 text-indigo-600">Key Features</h3>
+        <ul class="space-y-3">
+          <li class="feature-item flex items-start">
+            <span class="text-indigo-500 mr-2 mt-1"><i class="fas fa-check-circle"></i></span>
+            <span><strong class="text-gray-800">Student & Instructor Dashboards:</strong> Personalized interfaces to track courses, messages, and club activities.</span>
+          </li>
+          <li class="feature-item flex items-start">
+            <span class="text-indigo-500 mr-2 mt-1"><i class="fas fa-check-circle"></i></span>
+            <span><strong class="text-gray-800">Real-Time Chat:</strong> Powered by Socket.IO for instant messaging, typing indicators, and seen-receipt notifications.</span>
+          </li>
+          <li class="feature-item flex items-start">
+            <span class="text-indigo-500 mr-2 mt-1"><i class="fas fa-check-circle"></i></span>
+            <span><strong class="text-gray-800">Club Management:</strong> Create, approve, and join student clubs with an admin approval workflow.</span>
+          </li>
+          <li class="feature-item flex items-start">
+            <span class="text-indigo-500 mr-2 mt-1"><i class="fas fa-check-circle"></i></span>
+            <span><strong class="text-gray-800">Secure Authentication:</strong> Role-based login/signup using Node.js, Express, and MySQL.</span>
+          </li>
+          <li class="feature-item flex items-start">
+            <span class="text-indigo-500 mr-2 mt-1"><i class="fas fa-check-circle"></i></span>
+            <span><strong class="text-gray-800">Admin Panel:</strong> Full oversight of users, clubs, events, and system settings from a single control center.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm mb-8">
+        <h3 class="text-2xl font-semibold mb-4 text-indigo-600">Technology Stack</h3>
+        <p class="mb-6 text-gray-700 leading-relaxed">
+          Built with modern web technologies:
+          <span class="tech-stack font-medium text-indigo-600 cursor-pointer">Node.js</span>, 
+          <span class="tech-stack font-medium text-indigo-600 cursor-pointer">Express</span>, 
+          <span class="tech-stack font-medium text-indigo-600 cursor-pointer">MySQL</span>,
+          <span class="tech-stack font-medium text-indigo-600 cursor-pointer">Socket.IO</span>, and a responsive
+          <span class="tech-stack font-medium text-indigo-600 cursor-pointer">HTML/CSS/JavaScript</span> frontend.
+        </p>
+      </div>
+
+      <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100">
+        <p class="text-indigo-800 leading-relaxed">
+          With Ahoron, we aim to foster stronger connections, simplify administrative tasks,
+          and enrich the overall educational experience. Join us and take your campus community to the next level!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Add click effect to home button
+    document.querySelector('.home-btn').addEventListener('mousedown', function() {
+      this.classList.add('scale-95');
+    });
+    document.querySelector('.home-btn').addEventListener('mouseup', function() {
+      this.classList.remove('scale-95');
+    });
+    document.querySelector('.home-btn').addEventListener('mouseleave', function() {
+      this.classList.remove('scale-95');
+    });
+
+    // Add tooltip effect to technology stack items
+    const techItems = document.querySelectorAll('.tech-stack');
+    techItems.forEach(item => {
+      item.addEventListener('mouseenter', function() {
+        const techName = this.textContent.trim();
+        this.setAttribute('title', `Learn more about ${techName}`);
+      });
+    });
+  </script>
+</body>
+</html>

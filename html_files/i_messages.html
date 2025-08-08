@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instructor Messages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --secondary: #ec4899;
+      --accent: #f59e0b;
+      --light: #f8fafc;
+      --dark: #1e293b;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      padding: 20px;
+      background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 50%, #fef3c7 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+    }
+    
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    h2 {
+      color: var(--primary);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+    
+    #msgList {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .message-card {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.2);
+      animation: fadeInUp 0.5s ease-out;
+    }
+    
+    .message-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px rgba(124, 58, 237, 0.2);
+    }
+    
+    .message-card strong {
+      font-size: 1.1rem;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .message-card small {
+      color: var(--dark);
+      opacity: 0.8;
+      display: block;
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+    
+    .message-card button {
+      margin-top: 0.75rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(124, 58, 237, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .message-card button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(124, 58, 237, 0.3);
+    }
+    
+    .message-card button:active {
+      transform: translateY(0);
+    }
+    
+    .unread-badge {
+      background-color: #ef4444;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 2rem;
+      height: 2rem;
+      border: 3px solid rgba(124, 58, 237, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error-message {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      animation: shakeX 0.5s;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 class="animate__animated animate__fadeInDown">📬 Messages from Students</h2>
+  <div id="msgList">
+    <div style="text-align: center; margin-top: 2rem;">
+      <div class="loading-spinner"></div>
+      <p style="margin-top: 1rem;">Loading messages...</p>
+    </div>
+  </div>
+
+  <script>
+  const instructor_id = localStorage.getItem("instructor_id");
+  console.log("Instructor ID from localStorage:", instructor_id);
+
+  fetch(`http://localhost:3000/api/instructor/${instructor_id}/messages`)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      console.log("Fetched data from API:", data);
+      const list = document.getElementById("msgList");
+      list.innerHTML = "";
+
+      if (!Array.isArray(data.messages) || data.messages.length === 0) {
+        list.innerHTML = `
+          <div class="message-card animate__animated animate__fadeIn">
+            <div style="text-align: center; padding: 2rem;">
+              <i class="fas fa-inbox" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
+              <p style="color: #6b7280; font-size: 1.1rem;">No messages yet from students</p>
+              <p style="color: #9ca3af; font-size: 0.9rem;">When students message you, they'll appear here</p>
+            </div>
+          </div>
+        `;
+        console.warn("data.messages is empty or not an array");
+        return;
+      }
+
+      data.messages.forEach((msg, index) => {
+        const div = document.createElement("div");
+        div.className = `message-card animate__animated animate__fadeInUp`;
+        div.style.animationDelay = `${index * 0.1}s`;
+
+        div.innerHTML = `
+          <strong>
+            <i class="fas fa-user-graduate" style="color: ${parseInt(msg.unread) > 0 ? 'var(--secondary)' : 'var(--primary)'}"></i>
+            ${msg.student_name}
+            ${parseInt(msg.unread) > 0 ? `<span class="unread-badge">${msg.unread} unread</span>` : ""}
+          </strong>
+          <small>${msg.last_message}</small>
+          <button onclick="openChat(${msg.student_id})">
+            <i class="fas fa-comment-dots"></i> Open Chat
+          </button>
+        `;
+        list.appendChild(div);
+      });
+    })
+    .catch(err => {
+      document.getElementById("msgList").innerHTML = `
+        <div class="error-message animate__animated animate__shakeX">
+          <i class="fas fa-exclamation-triangle"></i> Failed to load messages: ${err.message}
+          <button onclick="window.location.reload()" style="margin-top: 0.5rem; background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">
+            <i class="fas fa-sync-alt"></i> Try Again
+          </button>
+        </div>
+      `;
+      console.error("Fetch error:", err);
+    });
+
+  function openChat(student_id) {
+    localStorage.setItem('messagesRead', 'true');
+    const role = "instructor";
+    const url = `chat_window.html?student_id=${student_id}&instructor_id=${instructor_id}&role=${role}`;
+    window.location.href = url;
+  }
+</script>
+
+</body>
+</html>

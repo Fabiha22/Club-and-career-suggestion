@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-purple-50 min-h-screen p-6">
+  <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-md mt-12">
+    <h1 class="text-3xl font-bold text-purple-700 mb-6 text-center">👤 Instructor Profile</h1>
+    <div id="profileData" class="text-gray-700 space-y-4">
+      <!-- Profile details will appear here -->
+    </div>
+    <div class="text-center mt-8">
+      <a href="i_dashboard.html" class="text-purple-600 hover:underline">← Back to Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const email = localStorage.getItem('email'); // ✅ use 'email' not 'username'
+      console.log("Stored email:", email);
+
+      if (!email) {
+        document.getElementById('profileData').innerHTML = `<p class="text-red-500">You are not logged in.</p>`;
+        return;
+      }
+
+      fetch(`http://localhost:3000/api/student-profile?email=${encodeURIComponent(email)}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Failed to fetch profile");
+          return res.json();
+        })
+        .then(data => {
+          const profile = document.getElementById('profileData');
+          profile.innerHTML = `
+            <p><strong>Name:</strong> ${data.name}</p>
+            <p><strong>Email:</strong> ${data.email}</p>
+            <p><strong>ID:</strong> ${data.id}</p>
+          `;
+        })
+        .catch(err => {
+          console.error("❌ Error loading profile:", err);
+          document.getElementById('profileData').innerHTML = `<p class="text-red-500">Error loading profile.</p>`;
+        });
+    });
+  </script>
+</body>
+</html>

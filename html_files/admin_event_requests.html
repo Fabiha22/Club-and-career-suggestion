@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Pending Event Requests</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8 font-sans">
+  <!-- Animated Gradient Header -->
+  <h1 class="text-3xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 animate-gradient bg-300%">
+    Pending Event Requests
+  </h1>
+
+  <!-- Glowing Table Container -->
+  <div class="overflow-x-auto rounded-2xl glow-container">
+    <table class="min-w-full bg-white backdrop-blur-sm bg-opacity-90">
+      <!-- Animated Table Header -->
+      <thead>
+        <tr class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg">
+          <th class="py-4 px-6 text-left font-bold uppercase tracking-wider transition-all duration-300 hover:bg-indigo-600 hover:scale-[1.02]">Club Name</th>
+          <th class="py-4 px-6 text-left font-bold uppercase tracking-wider transition-all duration-300 hover:bg-indigo-600 hover:scale-[1.02]">Event Name</th>
+          <th class="py-4 px-6 text-left font-bold uppercase tracking-wider transition-all duration-300 hover:bg-indigo-600 hover:scale-[1.02]">University</th>
+          <th class="py-4 px-6 text-left font-bold uppercase tracking-wider transition-all duration-300 hover:bg-indigo-600 hover:scale-[1.02]">Description</th>
+          <th class="py-4 px-6 text-left font-bold uppercase tracking-wider transition-all duration-300 hover:bg-indigo-600 hover:scale-[1.02]">Facebook Link</th>
+          <th class="py-4 px-6 text-left font-bold uppercase tracking-wider transition-all duration-300 hover:bg-indigo-600 hover:scale-[1.02]">Event Date</th>
+          <th class="py-4 px-6 text-left font-bold uppercase tracking-wider transition-all duration-300 hover:bg-indigo-600 hover:scale-[1.02]">Actions</th>
+        </tr>
+      </thead>
+
+      <!-- Interactive Table Body (Your original content will load here) -->
+      <tbody id="eventRequestsTableBody" class="divide-y divide-gray-200/70">
+        <!-- Rows will be dynamically inserted here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Custom Styles for Enhanced Interactivity -->
+  <style>
+    /* Animated gradient background for header */
+    .animate-gradient {
+      animation: gradient 8s ease infinite;
+    }
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Glow effect for table container */
+    .glow-container {
+      box-shadow: 
+        0 0 10px rgba(99, 102, 241, 0.2),
+        0 0 20px rgba(99, 102, 241, 0.15),
+        0 0 30px rgba(99, 102, 241, 0.1);
+      transition: box-shadow 0.5s ease;
+    }
+    .glow-container:hover {
+      box-shadow: 
+        0 0 15px rgba(99, 102, 241, 0.3),
+        0 0 30px rgba(99, 102, 241, 0.2),
+        0 0 45px rgba(99, 102, 241, 0.1);
+    }
+
+    /* Row entry animation */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    #eventRequestsTableBody tr {
+      animation: fadeInUp 0.4s ease-out forwards;
+      opacity: 0;
+    }
+    #eventRequestsTableBody tr:nth-child(1) { animation-delay: 0.1s; }
+    #eventRequestsTableBody tr:nth-child(2) { animation-delay: 0.2s; }
+    #eventRequestsTableBody tr:nth-child(3) { animation-delay: 0.3s; }
+    #eventRequestsTableBody tr:nth-child(4) { animation-delay: 0.4s; }
+
+    /* Hover effects for rows */
+    #eventRequestsTableBody tr {
+      transition: all 0.3s ease;
+    }
+    #eventRequestsTableBody tr:hover {
+      background: rgba(224, 231, 255, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+    }
+
+    /* Cell hover effects */
+    #eventRequestsTableBody td {
+      transition: all 0.2s ease;
+    }
+    #eventRequestsTableBody tr:hover td {
+      transform: scale(1.01);
+    }
+  </style>
+
+  <script>
+    async function fetchPendingEvents() {
+      try {
+        const res = await fetch('http://localhost:3000/api/events/pending');
+        if (!res.ok) throw new Error('Network response was not ok');
+        const events = await res.json();
+        const tbody = document.getElementById('eventRequestsTableBody');
+        tbody.innerHTML = '';
+
+        if (!events.length) {
+          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4">No pending event requests</td></tr>`;
+          return;
+        }
+
+        events.forEach(event => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td class="border px-4 py-2">${event.club_name || 'N/A'}</td>
+            <td class="border px-4 py-2">${event.event_name || 'N/A'}</td>
+            <td class="border px-4 py-2">${event.university_name || 'N/A'}</td>
+            <td class="border px-4 py-2">${event.description || 'N/A'}</td>
+            <td class="border px-4 py-2 break-all">
+              <a href="${event.facebook_link}" target="_blank" class="text-blue-600 underline">
+                ${event.facebook_link}
+              </a>
+            </td>
+            <td class="border px-4 py-2">${new Date(event.event_date).toLocaleString() || 'N/A'}</td>
+            <td class="border px-4 py-2 space-x-2">
+              <button onclick="handleApprove(${event.id})" class="bg-green-500 text-white px-3 py-1 rounded">Approve</button>
+              <button onclick="handleDecline(${event.id})" class="bg-red-500 text-white px-3 py-1 rounded">Decline</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error('Fetch error:', err);
+      }
+    }
+
+    async function handleApprove(eventId) {
+  if (!confirm('Approve this event request?')) return;
+  const res = await fetch(`http://localhost:3000/api/events/${eventId}/approve`, {
+    method: 'POST'
+  });
+  if (res.ok) {
+    alert('Event approved!');
+    fetchPendingEvents();
+  } else {
+    const err = await res.json();
+    alert('Failed to approve the event: ' + err.message);
+  }
+}
+
+
+    async function handleDecline(eventId) {
+  if (!confirm('Decline this event request?')) return;
+  const res = await fetch(`http://localhost:3000/api/events/${eventId}/decline`, {
+    method: 'POST'
+  });
+  if (res.ok) {
+    alert('Event declined.');
+    fetchPendingEvents();
+  } else {
+    const err = await res.json();
+    alert('Failed to decline the event: ' + err.message);
+  }
+}
+
+
+    fetchPendingEvents();
+  </script>
+</body>
+</html>

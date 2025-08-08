@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Instructors</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-8 font-sans min-h-screen">
+
+  <!-- Colorful Header -->
+  <div class="max-w-4xl mx-auto mb-8">
+    <div class="bg-gradient-to-r from-purple-600 to-pink-500 p-6 rounded-2xl shadow-xl text-white">
+      <h1 class="text-3xl font-bold flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+        </svg>
+        All Instructors
+      </h1>
+      <div class="w-full bg-white/30 h-1 mt-2 rounded-full overflow-hidden">
+        <div class="h-full bg-yellow-300 animate-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rainbow Table Design -->
+  <div class="max-w-4xl mx-auto bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl overflow-hidden border-2 border-white">
+    <table class="min-w-full divide-y divide-white/50">
+      <thead>
+        <tr class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+          <th class="py-4 px-6 text-left font-bold text-white uppercase tracking-wider group hover:bg-indigo-600 transition-all duration-300">
+            <span class="flex items-center">
+              ID
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4 text-yellow-200 opacity-0 group-hover:opacity-100 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+              </svg>
+            </span>
+          </th>
+          <th class="py-4 px-6 text-left font-bold text-white uppercase tracking-wider group hover:bg-purple-600 transition-all duration-300">
+            <span class="flex items-center">
+              Name
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4 text-yellow-200 opacity-0 group-hover:opacity-100 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+              </svg>
+            </span>
+          </th>
+          <th class="py-4 px-6 text-left font-bold text-white uppercase tracking-wider group hover:bg-pink-600 transition-all duration-300">
+            <span class="flex items-center">
+              Email
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4 text-yellow-200 opacity-0 group-hover:opacity-100 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+              </svg>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="instructors-table-body" class="divide-y divide-white/30">
+        <tr class="hover:shadow-lg transition-all duration-300">
+          <td colspan="3" class="px-6 py-8 text-center bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50">
+            <div class="inline-flex items-center text-purple-600 font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-pink-500 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              Loading instructors...
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Colorful Interactive Features -->
+  <style>
+    /* Rainbow progress bar animation */
+    @keyframes progress {
+      0% { width: 0%; background: #f59e0b; }
+      50% { background: #ec4899; }
+      100% { width: 100%; background: #8b5cf6; }
+    }
+    .animate-progress {
+      animation: progress 2s ease-in-out infinite alternate;
+    }
+
+    /* Row hover effects */
+    #instructors-table-body tr:not(:only-child) {
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
+      background-size: 200% auto;
+    }
+    
+    #instructors-table-body tr:not(:only-child):hover {
+      background-position: 100% center;
+      transform: scale(1.01);
+      box-shadow: 0 4px 20px -5px rgba(139, 92, 246, 0.3);
+    }
+    
+    /* Cell highlight effect */
+    #instructors-table-body td {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    #instructors-table-body tr:hover td::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(to bottom, #6366f1, #ec4899);
+      border-radius: 0 4px 4px 0;
+    }
+    
+    /* Bouncing icon animation */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .animate-bounce {
+      animation: bounce 1.5s infinite;
+    }
+    
+    /* Colorful background stripes */
+    #instructors-table-body tr:nth-child(odd):not(:only-child) {
+      background-color: rgba(224, 231, 255, 0.3);
+    }
+    #instructors-table-body tr:nth-child(even):not(:only-child) {
+      background-color: rgba(245, 243, 255, 0.3);
+    }
+  </style>
+
+
+  <script>
+    async function loadInstructors() {
+      try {
+        const response = await fetch('http://localhost:3000/api/instructors');
+        if (!response.ok) throw new Error('Failed to fetch');
+
+        const instructors = await response.json();
+
+        const tbody = document.getElementById('instructors-table-body');
+        tbody.innerHTML = ''; // Clear loading text
+
+        if (instructors.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3" class="text-center py-4">No instructors found.</td></tr>';
+          return;
+        }
+
+        instructors.forEach(ins => {
+          const tr = document.createElement('tr');
+          tr.classList.add('border-b', 'hover:bg-purple-50');
+
+          tr.innerHTML = `
+            <td class="py-3 px-6 border">${ins.id}</td>
+            <td class="py-3 px-6 border">${ins.name}</td>
+            <td class="py-3 px-6 border">${ins.email}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+      } catch (error) {
+        const tbody = document.getElementById('instructors-table-body');
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center py-4 text-red-600">${error.message}</td></tr>`;
+        console.error('Error loading instructors:', error);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', loadInstructors);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Window</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fredoka+One&display=swap');
+  
+  :root {
+    --student-gradient: linear-gradient(135deg, #00ff87 0%, #60efff 100%);
+    --instructor-gradient: linear-gradient(135deg, #ff4dff 0%, #6a11cb 100%);
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --input-bg: rgba(255, 255, 255, 0.95);
+    --chat-bg: rgba(255, 255, 255, 0.95);
+    --shadow-color: rgba(31, 38, 135, 0.15);
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-gradient);
+    padding: 20px;
+    min-height: 100vh;
+    animation: gradientShift 15s ease infinite;
+    background-size: 200% 200%;
+  }
+  
+  h2 {
+    font-family: 'Fredoka One', cursive;
+    color: #6a11cb;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  #messages {
+    max-height: 500px;
+    overflow-y: auto;
+    background: var(--chat-bg);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px var(--shadow-color);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+  }
+  
+  #messages:hover {
+    box-shadow: 0 15px 50px rgba(31, 38, 135, 0.25);
+  }
+  
+  .message {
+    margin: 10px 0;
+    padding: 15px 20px;
+    border-radius: 25px;
+    max-width: 80%;
+    position: relative;
+    animation: messageIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transform-origin: bottom;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+  
+  .message:hover {
+    transform: scale(1.02);
+  }
+  
+  .student { 
+    background: var(--student-gradient);
+    align-self: flex-start;
+    border-bottom-left-radius: 5px;
+    color: #111;
+  }
+  
+  .instructor { 
+    background: var(--instructor-gradient);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
+  }
+  
+  .meta {
+    font-size: 11px;
+    margin-top: 8px;
+    text-align: right;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+  
+  .student .meta {
+    color: #006a4e;
+  }
+  
+  .instructor .meta {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .seen {
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 6px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .student .seen {
+    color: #1a56db;
+  }
+  
+  .instructor .seen {
+    color: #d1d5fd;
+  }
+  
+  #chatBox {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 10px;
+    background: var(--chat-bg);
+    border-radius: 50px;
+    box-shadow: 0 8px 32px var(--shadow-color);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  
+  #chatBox input {
+    flex: 1;
+    padding: 16px 25px;
+    border-radius: 50px;
+    border: none;
+    background: var(--input-bg);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+  }
+  
+  #chatBox input:focus {
+    outline: none;
+    box-shadow: 0 4px 25px rgba(106, 17, 203, 0.25);
+    transform: translateY(-2px);
+  }
+  
+  #chatBox input::placeholder {
+    color: #999;
+    font-weight: 400;
+  }
+  
+  #chatBox button {
+    padding: 16px 28px;
+    border: none;
+    background: var(--instructor-gradient);
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 5px 20px rgba(106, 17, 203, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  #chatBox button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(106, 17, 203, 0.4);
+    animation: pulse 1s infinite;
+  }
+  
+  #chatBox button:active {
+    transform: translateY(1px);
+  }
+  
+  #typing {
+    font-style: italic;
+    font-size: 14px;
+    color: #6a11cb;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  #typing.active {
+    opacity: 1;
+  }
+  
+  /* Animations */
+  @keyframes messageIn {
+    0% {
+      opacity: 0;
+      transform: translateY(15px) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .typing-dots {
+    display: flex;
+    gap: 6px;
+    margin-right: 8px;
+  }
+  
+  .typing-dot {
+    width: 10px;
+    height: 10px;
+    background: #6a11cb;
+    border-radius: 50%;
+    animation: typingAnimation 1.4s infinite ease-in-out;
+  }
+  
+  .typing-dot:nth-child(1) { animation-delay: 0s; }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  
+  @keyframes typingAnimation {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+    30% { transform: translateY(-8px); opacity: 1; }
+  }
+  
+  /* Custom scrollbar */
+  #messages::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  #messages::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    margin: 10px 0;
+  }
+  
+  #messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(#6a11cb, #ff4dff);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Pulse animation */
+  @keyframes pulse {
+    0% { transform: translateY(-3px) scale(1.05); }
+    50% { transform: translateY(-3px) scale(1.08); }
+    100% { transform: translateY(-3px) scale(1.05); }
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Message seen animation */
+  .seen {
+    transition: all 0.3s ease;
+  }
+  
+  .seen.animate {
+    animation: bounce 0.5s;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    #chatBox {
+      gap: 10px;
+    }
+    #chatBox input {
+      padding: 14px 20px;
+    }
+    #chatBox button {
+      padding: 14px 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <h2>💬 Chat Window</h2>
+  <div id="typing">
+    <div class="typing-dots">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+    <span id="typing-text"></span>
+  </div>
+  <div id="messages"></div>
+
+  <div id="chatBox">
+    <input type="text" id="msgInput" placeholder="Type a message..." oninput="sendTyping()" onkeypress="handleKeyPress(event)" />
+    <button onclick="sendMessage()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"></line>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+      </svg>
+      Send
+    </button>
+  </div>
+
+  <script>
+    const socket = io('http://localhost:3000');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const student_id = urlParams.get('student_id');
+    const instructor_id = urlParams.get('instructor_id');
+    const role = urlParams.get('role');
+    const user_id = role === 'student' ? student_id : instructor_id;
+
+    const messagesDiv = document.getElementById("messages");
+    const typingDiv = document.getElementById("typing");
+    const typingText = document.getElementById("typing-text");
+
+    let lastSentMessage = null;
+    let typingTimeout;
+
+    socket.emit('joinRoom', { student_id, instructor_id });
+
+    // Load past chat
+    fetch(`http://localhost:3000/api/chat?student_id=${student_id}&instructor_id=${instructor_id}`)
+      .then(res => res.json())
+      .then(data => {
+        data.forEach((msg, i) => {
+          setTimeout(() => {
+            const isSeen = msg.seen && msg.sender_role === 'student';
+            renderMessage(msg.message, msg.sender_role, msg.timestamp, isSeen);
+          }, i * 100);
+        });
+
+        if (role === 'instructor') {
+          fetch("http://localhost:3000/api/chat/mark-read", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ instructor_id, student_id })
+          }).then(() => {
+            socket.emit("markSeen", { instructor_id, student_id });
+          });
+        }
+      });
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    function sendMessage() {
+      const msg = document.getElementById("msgInput").value.trim();
+      if (!msg) return;
+
+      const receiver_role = role === 'student' ? 'instructor' : 'student';
+      const receiver_id = role === 'student' ? instructor_id : student_id;
+
+      const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      socket.emit('sendMessage', {
+        sender_role: role,
+        sender_id: user_id,
+        receiver_role,
+        receiver_id,
+        message: msg
+      });
+
+      renderMessage(msg, role, timestamp, false, true);
+      document.getElementById("msgInput").value = "";
+      
+      // Clear typing indicator
+      clearTimeout(typingTimeout);
+      typingDiv.classList.remove("active");
+    }
+
+    function sendTyping() {
+      const receiver_id = role === 'student' ? instructor_id : student_id;
+      socket.emit("typing", {
+        sender_role: role,
+        receiver_id,
+        student_id,
+        instructor_id
+      });
+      
+      // Clear previous timeout
+      clearTimeout(typingTimeout);
+      
+      // Set new timeout to hide typing after 1.5s of inactivity
+      typingTimeout = setTimeout(() => {
+        typingDiv.classList.remove("active");
+      }, 1500);
+    }
+
+    socket.on('typing', (data) => {
+      if (
+        (data.sender_role === 'instructor' && role === 'student') ||
+        (data.sender_role === 'student' && role === 'instructor')
+      ) {
+        typingText.textContent = `${data.sender_role} is typing...`;
+        typingDiv.classList.add("active");
+      }
+    });
+
+    socket.on('receiveMessage', (data) => {
+      const isForThisUser =
+        (data.sender_id == student_id && role === 'instructor') ||
+        (data.sender_id == instructor_id && role === 'student');
+
+      if (isForThisUser) {
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        renderMessage(data.message, data.sender_role, time, false);
+      }
+    });
+
+    socket.on("messageSeen", () => {
+      if (lastSentMessage) {
+        const seenSpan = lastSentMessage.querySelector('.seen');
+        if (seenSpan) {
+          seenSpan.textContent = "✓✓ Seen";
+          seenSpan.classList.add("animate");
+          setTimeout(() => seenSpan.classList.remove("animate"), 500);
+        }
+      }
+    });
+
+    function renderMessage(msg, sender_role, time = '', seen = false, isMine = false) {
+      const div = document.createElement("div");
+      div.className = `message ${sender_role} new-message`;
+      
+      div.innerHTML = `
+        <div>${msg}</div>
+        <div class="meta">
+          ${time}
+          ${isMine ? `<span class="seen">${seen ? "✓✓ Seen" : "✓ Sent"}</span>` : ""}
+        </div>
+      `;
+
+      messagesDiv.appendChild(div);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      if (isMine) lastSentMessage = div;
+      
+      // Remove new-message class after animation
+      setTimeout(() => {
+        div.classList.remove("new-message");
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

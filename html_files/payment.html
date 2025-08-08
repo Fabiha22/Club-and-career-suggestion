@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment - Ahoron</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fredoka+One&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #ffcce6, #d9b3ff, #b3e0ff, #b3ffd9);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: hueRotate 8s infinite alternate;
+      font-size: 3rem !important;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 0.5rem !important;
+    }
+
+    @keyframes hueRotate {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .payment-option {
+      background: rgba(255, 255, 255, 0.9) !important;
+      backdrop-filter: blur(5px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 16px !important;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .payment-option:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .payment-option::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #ff00cc, #3333ff);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .payment-option:hover::before {
+      transform: scaleX(1);
+    }
+
+    .payment-option img {
+      transition: all 0.4s ease;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    }
+
+    .payment-option:hover img {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .payment-form {
+      background: rgba(255, 255, 255, 0.9) !important;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 24px !important;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+      transition: all 0.4s ease;
+    }
+
+    .payment-form:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      font-family: 'Fredoka One', cursive;
+      color: #6a11cb;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-size: 2rem !important;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .payment-form:hover h2::after {
+      transform: scaleX(1);
+    }
+
+    input {
+      background: rgba(255, 255, 255, 0.7) !important;
+      border: 2px solid #e2e8f0 !important;
+      border-radius: 12px !important;
+      padding: 1rem !important;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #9f7aea !important;
+      box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.3), inset 0 2px 4px rgba(0,0,0,0.05);
+      transform: scale(1.01);
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(45deg, #805ad5, #6b46c1) !important;
+      color: white !important;
+      border: none;
+      border-radius: 14px !important;
+      padding: 1rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.5px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button[type="submit"]:hover {
+      background: linear-gradient(45deg, #6b46c1, #805ad5) !important;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(1px);
+    }
+
+    button[type="submit"]::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    button[type="submit"]:hover::after {
+      transform: translateX(100%);
+    }
+
+    .or-divider {
+      position: relative;
+      margin: 2rem 0;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #9f7aea, transparent);
+    }
+
+    .or-divider::before {
+      left: 0;
+    }
+
+    .or-divider::after {
+      right: 0;
+    }
+
+    .or-divider p {
+      display: inline-block;
+      background: white;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 1;
+      font-weight: 600;
+      color: #6b46c1;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    footer {
+      color: #6b46c1 !important;
+      font-weight: 500;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+</head>
+<body class="min-h-screen text-gray-800">
+
+  <!-- Header -->
+  <div class="text-center py-12">
+    <h1 class="mb-2">Secure Your Spot</h1>
+    <p class="text-lg">Choose a payment method or submit your transaction details if already paid.</p>
+  </div>
+
+  <!-- Payment Options -->
+  <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 px-6">
+    <!-- Bkash -->
+    <a href="https://www.bkash.com/" target="_blank" class="payment-option p-4 flex flex-col items-center">
+      <img src="/images/bkash.png" alt="Bkash" class="w-20 h-20 object-contain mb-2">
+      <span class="text-pink-600 font-semibold">bKash</span>
+    </a>
+    
+    <!-- Nagad -->
+    <a href="https://www.nagad.com.bd/" target="_blank" class="payment-option p-4 flex flex-col items-center">
+      <img src="https://download.logo.wine/logo/Nagad/Nagad-Logo.wine.png" alt="Nagad" class="w-20 h-20 object-contain mb-2">
+      <span class="text-red-600 font-semibold">Nagad</span>
+    </a>
+
+    <!-- Upay -->
+    <a href="https://www.upaybd.com/" target="_blank" class="payment-option p-4 flex flex-col items-center">
+      <img src="/images/upay.png" alt="Upay" class="w-20 h-20 object-contain mb-2">
+      <span class="text-green-600 font-semibold">Upay</span>
+    </a>
+
+    <!-- Rocket -->
+    <a href="https://www.dutchbanglabank.com/rocket/rocket.html" target="_blank" class="payment-option p-4 flex flex-col items-center">
+      <img src="/images/rocket.png" alt="Rocket" class="w-20 h-20 object-contain mb-2">
+      <span class="text-purple-600 font-semibold">Rocket</span>
+    </a>
+  </div>
+
+  <!-- OR Divider -->
+  <div class="or-divider text-center mt-12">
+    <p class="text-lg font-semibold">OR</p>
+  </div>
+
+  <!-- Manual Payment Form -->
+  <div class="max-w-xl mx-auto mt-8 payment-form p-8">
+    <h2 class="mb-6 text-center">Already Paid?</h2>
+    <form action="#" method="POST" class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Transaction ID</label>
+        <input type="text" name="transaction_id" required placeholder="e.g. TXN123456789"/>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Amount (BDT)</label>
+        <input type="number" name="amount" required placeholder="e.g. 500"/>
+      </div>
+      <button type="submit">Submit Payment Info</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center mt-16 pb-6 text-sm">
+    &copy; 2025 Ahoron. All rights reserved.
+  </footer>
+
+</body>
+</html>

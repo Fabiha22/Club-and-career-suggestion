@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registered Students - Ahoron</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-50 font-['Poppins'] min-h-screen">
+
+  <div class="max-w-7xl mx-auto p-6 animate-fade-in">
+    <!-- Vibrant Header -->
+    <div class="flex items-center mb-8">
+      <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">
+        Registered Students
+      </h1>
+      <div class="ml-4 h-1 flex-1 bg-gradient-to-r from-purple-200 to-pink-200 rounded-full overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 animate-progress"></div>
+      </div>
+    </div>
+
+    <!-- Animated Colorful Table -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-white/30">
+      <table class="min-w-full">
+        <thead>
+          <tr class="bg-gradient-to-r from-purple-600 to-pink-500 text-white">
+            <th class="px-6 py-4 text-left font-bold uppercase tracking-wider group hover:bg-purple-700 transition-all duration-300">
+              <span class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                ID
+              </span>
+            </th>
+            <th class="px-6 py-4 text-left font-bold uppercase tracking-wider group hover:bg-purple-700 transition-all duration-300">
+              <span class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                Name
+              </span>
+            </th>
+            <th class="px-6 py-4 text-left font-bold uppercase tracking-wider group hover:bg-purple-700 transition-all duration-300">
+              <span class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Email
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="student-table-body" class="divide-y divide-purple-100/50">
+          <!-- Loading State -->
+          <tr>
+            <td colspan="3" class="px-6 py-8 text-center">
+              <div class="inline-flex items-center text-purple-600 font-medium animate-pulse">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-pink-500 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Loading student data...
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Custom Styles -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    
+    /* Progress animation */
+    @keyframes progress {
+      0% { width: 0%; background-position: 0% 50%; }
+      100% { width: 100%; background-position: 100% 50%; }
+    }
+    .animate-progress {
+      animation: progress 1.5s ease-in-out infinite alternate;
+      background: linear-gradient(90deg, #8b5cf6, #ec4899, #8b5cf6);
+      background-size: 200% auto;
+    }
+    
+    /* Fade-in animation */
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fade-in 0.5s ease-out;
+    }
+    
+    /* Row hover effects */
+    #student-table-body tr {
+      transition: all 0.3s ease;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+      background-size: 200% auto;
+      background-position: 0% center;
+    }
+    
+    #student-table-body tr:hover {
+      background-position: 100% center;
+      transform: scale(1.01);
+      box-shadow: 0 4px 15px -5px rgba(139, 92, 246, 0.2);
+    }
+    
+    #student-table-body tr:hover td {
+      color: #7c3aed;
+    }
+    
+    /* Alternating row colors */
+    #student-table-body tr:nth-child(odd) {
+      background-color: rgba(237, 233, 254, 0.3);
+    }
+    #student-table-body tr:nth-child(even) {
+      background-color: rgba(254, 244, 250, 0.3);
+    }
+  </style>
+
+
+<script>
+  async function loadStudents() {
+    try {
+      const res = await fetch('http://localhost:3000/api/students');
+      const students = await res.json();
+
+      const tbody = document.getElementById('student-table-body');
+      tbody.innerHTML = '';
+
+      if (students.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="px-4 py-4 text-center text-gray-500">No students found.</td></tr>`;
+        return;
+      }
+
+      students.forEach(student => {
+        const row = document.createElement('tr');
+        row.classList.add('border-t');
+
+        row.innerHTML = `
+          <td class="px-4 py-2 border">${student.id}</td>
+          <td class="px-4 py-2 border">${student.name}</td>
+          <td class="px-4 py-2 border">${student.email}</td>
+        `;
+
+        tbody.appendChild(row);
+      });
+    } catch (err) {
+      console.error('Error loading students:', err);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', loadStudents);
+</script>
+
+
+</body>
+</html>

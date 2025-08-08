@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clubs by University</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #8a2be2 0%, #ff00ff 50%, #4b0082 100%);
+      --card-gradient: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      --hover-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      text-shadow: 3px 3px 0 rgba(255,255,255,0.5);
+      background: linear-gradient(to right, #8a2be2, #ff00ff, #4b0082);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shine 3s linear infinite;
+      background-size: 200% auto;
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    .club-card {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: var(--card-gradient);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .club-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--hover-gradient);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .club-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .club-card:hover::before {
+      opacity: 1;
+    }
+
+    .club-card img {
+      transition: transform 0.3s ease;
+    }
+
+    .club-card:hover img {
+      transform: scale(1.1) rotate(2deg);
+    }
+
+    .university-logo {
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .university-logo:hover {
+      transform: rotate(10deg) scale(1.1);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .highlight {
+      animation: glow 2s ease-in-out 3;
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 10px rgba(255, 0, 200, 0.5); }
+      50% { box-shadow: 0 0 30px 10px rgba(255, 0, 200, 0.8); }
+      100% { box-shadow: 0 0 10px rgba(255, 0, 200, 0.5); }
+    }
+
+    #upcomingEvent {
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      border-left: 8px solid;
+      border-image: linear-gradient(to bottom, #8a2be2, #ff00ff, #4b0082) 1;
+      transition: all 0.3s ease;
+    }
+
+    #upcomingEvent:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    #searchInput {
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      background: rgba(255,255,255,0.8);
+    }
+
+    #searchInput:focus {
+      box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.3);
+    }
+
+    .search-btn {
+      background: var(--primary-gradient);
+      background-size: 200% auto;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+    }
+
+    .search-btn:hover {
+      background-position: right center;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(138, 43, 226, 0.6);
+    }
+
+    .search-btn:active {
+      transform: translateY(1px);
+    }
+
+    .countdown {
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 5px rgba(255,255,255,0.8);
+    }
+
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* Pulse animation for event section */
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(138, 43, 226, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0); }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #8a2be2, #ff00ff);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="max-w-7xl mx-auto p-6">
+    <h1 class="text-5xl md:text-6xl font-bold text-center mb-12 mt-6 floating">
+      Explore Clubs by University
+    </h1>
+
+    <!-- Upcoming Event Section -->
+    <div id="upcomingEvent" class="mb-12 p-6 rounded-xl shadow-lg pulse">
+      <h2 class="text-2xl font-bold text-purple-800 mb-2">🎉 Upcoming Club Event</h2>
+      <p class="text-lg text-gray-700 mb-1"><span class="font-semibold">Event:</span> <span id="eventName">Tech Carnival 2025</span></p>
+      <p class="text-lg text-gray-700 mb-1"><span class="font-semibold">Club:</span> <span id="eventClub">Dhaka University IT Society</span></p>
+      <p class="text-lg text-gray-700 mb-3">
+        <span class="font-semibold">Facebook Page:</span>
+        <a href="https://www.facebook.com/DUITSociety" target="_blank" class="text-blue-600 hover:underline hover:text-blue-800 transition">Visit Here</a>
+      </p>
+      <div class="text-xl font-semibold text-purple-700">
+        ⏳ Event starts in: <span id="countdown" class="countdown font-mono"></span>
+      </div>
+    </div>
+
+    <!-- Search Section -->
+    <div class="flex justify-center items-center mb-12 space-x-4">
+      <input type="text" id="searchInput" placeholder="Search a club name..."
+        class="px-6 py-3 w-72 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-600 text-lg" />
+      <button onclick="searchClub()"
+        class="px-8 py-3 text-white rounded-full search-btn transition flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        Find
+      </button>
+    </div>
+
+    <!-- Dynamic University Sections Will Go Here -->
+    <div id="clubs-container" class="space-y-16"></div>
+  </div>
+
+  <script>
+  // Countdown timer
+  function startCountdown(eventTime) {
+    const countdownElement = document.getElementById("countdown");
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const distance = eventTime - now;
+
+      if (distance < 0) {
+        countdownElement.innerHTML = "<span class='text-green-600'>🎊 Event Started!</span>";
+        clearInterval(timerInterval);
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownElement.innerHTML = `
+        <span class="text-purple-800">${days}d</span> 
+        <span class="text-pink-600">${hours}h</span> 
+        <span class="text-indigo-600">${minutes}m</span> 
+        <span class="text-blue-600">${seconds}s</span>
+      `;
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+  }
+
+  // Load nearest approved upcoming event from backend
+  async function loadUpcomingEvent() {
+    try {
+      const res = await fetch('http://localhost:3000/api/events/approved/upcoming');
+      const events = await res.json();
+
+      const upcomingDiv = document.getElementById('upcomingEvent');
+
+      if (!events.length) {
+        upcomingDiv.innerHTML = `
+          <h2 class="text-2xl font-bold text-purple-800 mb-2">🎉 Upcoming Club Event</h2>
+          <p class="text-lg text-gray-700">No upcoming events at the moment.</p>
+        `;
+        return;
+      }
+
+      const nextEvent = events[0];
+      const clubName = nextEvent.club_name || "N/A";
+
+      upcomingDiv.innerHTML = `
+        <h2 class="text-2xl font-bold text-purple-800 mb-2">🎉 Upcoming Club Event</h2>
+        <p class="text-lg text-gray-700 mb-1"><span class="font-semibold">Event:</span> <span id="eventName">${nextEvent.event_name}</span></p>
+        <p class="text-lg text-gray-700 mb-1"><span class="font-semibold">Club:</span> <span id="eventClub">${clubName}</span></p>
+        <p class="text-lg text-gray-700 mb-1"><span class="font-semibold">University:</span> <span id="eventUniversity">${nextEvent.university_name}</span></p>
+        <p class="text-lg text-gray-700 mb-3">
+          <span class="font-semibold">Facebook Page:</span>
+          <a href="${nextEvent.facebook_link}" target="_blank" class="text-blue-600 hover:underline transition">Visit Here</a>
+        </p>
+        <div class="text-xl font-semibold text-purple-700">
+          ⏳ Event starts in: <span id="countdown" class="countdown font-mono"></span>
+        </div>
+      `;
+
+      startCountdown(new Date(nextEvent.event_date).getTime());
+
+    } catch (error) {
+      console.error('Failed to load upcoming events:', error);
+    }
+  }
+
+  // Load clubs grouped by university
+  async function loadApprovedClubs() {
+    try {
+      const response = await fetch('http://localhost:3000/api/clubs/approved');
+      const clubs = await response.json();
+
+      const groupedByUniversity = {};
+      clubs.forEach(club => {
+        const uni = club.university_name.trim();
+        if (!groupedByUniversity[uni]) groupedByUniversity[uni] = [];
+        groupedByUniversity[uni].push(club);
+      });
+
+      const container = document.getElementById('clubs-container');
+      container.innerHTML = '';
+
+      for (const [university, uniClubs] of Object.entries(groupedByUniversity)) {
+        const section = document.createElement('div');
+        const initials = university.split(' ').map(w => w[0]).join('').toUpperCase();
+        const hue = Math.floor(Math.random() * 360);
+        const bgColor = `hsl(${hue}, 80%, 60%)`;
+
+        section.innerHTML = `
+          <div class="flex items-center mb-8 space-x-6">
+            <div class="w-28 h-28 rounded-full flex items-center justify-center text-4xl font-bold text-white shadow-xl border-4 border-white university-logo" style="background: ${bgColor}">
+              ${initials}
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 bg-white/80 px-4 py-2 rounded-lg shadow">${university}</h2>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="${university}-clubs"></div>
+        `;
+
+        container.appendChild(section);
+
+        const clubContainer = section.querySelector(`#${CSS.escape(university)}-clubs`);
+
+        uniClubs.forEach((club, index) => {
+          const clubCard = document.createElement('a');
+          clubCard.href = `club_detail.html?club=${encodeURIComponent(club.club_name)}`;
+          clubCard.className = 'p-6 rounded-xl shadow-lg club-card cursor-pointer flex flex-col items-center';
+          clubCard.setAttribute('data-club', club.club_name);
+
+          const clubImage = club.club_image && club.club_image.trim() !== ''
+            ? club.club_image
+            : '/images/default_club.png';
+
+          // Delay animation for staggered effect
+          clubCard.style.animationDelay = `${index * 0.1}s`;
+
+          clubCard.innerHTML = `
+            <div class="w-32 h-32 mb-4 rounded-full overflow-hidden shadow-lg border-4 border-white transform transition duration-300 hover:rotate-6">
+              <img src="${clubImage}" alt="${club.club_name}" class="w-full h-full object-cover" />
+            </div>
+            <h3 class="text-xl font-semibold text-purple-700 mb-2 text-center">${club.club_name}</h3>
+            <p class="text-gray-600 text-center mb-4 flex-grow">${club.description}</p>
+            <div class="mt-auto">
+              <a href="${club.facebook_link}" target="_blank" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition text-sm">
+                Facebook Page
+              </a>
+            </div>
+          `;
+
+          clubContainer.appendChild(clubCard);
+        });
+      }
+    } catch (err) {
+      console.error('Error loading clubs:', err);
+    }
+  }
+
+  // Search club by name and highlight
+  function searchClub() {
+    const input = document.getElementById("searchInput").value.toLowerCase().trim();
+    const clubs = document.querySelectorAll("[data-club]");
+
+    let found = false;
+    clubs.forEach(card => {
+      const clubName = card.getAttribute("data-club").toLowerCase();
+      card.classList.remove("highlight");
+
+      if (clubName.includes(input) && input !== "") {
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
+        card.classList.add("highlight");
+        found = true;
+        
+        // Add celebration effect
+        const confetti = document.createElement('div');
+        confetti.className = 'absolute inset-0 z-10 pointer-events-none';
+        confetti.innerHTML = `
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div style="font-size: 3rem; animation: zoomIn 0.5s ease-out;">🎉</div>
+          </div>
+        `;
+        card.appendChild(confetti);
+        
+        setTimeout(() => {
+          confetti.remove();
+        }, 1000);
+      }
+    });
+
+    if (!found && input !== "") {
+      // Add shake animation to search box
+      const searchBox = document.getElementById("searchInput");
+      searchBox.classList.add('animate-shake');
+      setTimeout(() => {
+        searchBox.classList.remove('animate-shake');
+      }, 500);
+      
+      // Create a temporary notification
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg';
+      notification.textContent = 'No matching club found!';
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 2000);
+    }
+  }
+
+  // Initialize all on DOM load
+  document.addEventListener('DOMContentLoaded', () => {
+    loadUpcomingEvent();
+    loadApprovedClubs();
+    
+    // Add keypress event for search input
+    document.getElementById("searchInput").addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchClub();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
